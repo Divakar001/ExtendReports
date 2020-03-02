@@ -1,0 +1,104 @@
+package seleniumTest;
+
+import java.io.File;
+import java.io.IOException;
+
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.io.FileHandler;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
+
+public class ExtendedReports {
+	WebDriver driver;
+	ExtentReports extentreport;
+	ExtentHtmlReporter htmlreporter;
+	ExtentTest testcase;
+	/*TakesScreenshot screenshots=(TakesScreenshot) driver; 
+	File sourcefile=screenshots.getScreenshotAs(OutputType.FILE); 
+	File destinationfile=new File("C:\\Users\\Divakar\\Downloads\\sample3.png");
+	FileHandler.copy(sourcefile, destinationfile);*/
+
+
+	
+	@Test
+	public void openGoogle() throws IOException, InterruptedException{
+		testcase=extentreport.createTest("verify Google title");
+		testcase.log(Status.INFO, "navigating to google");
+		driver.get("http://www.google.co.in");
+		String title=driver.getTitle();
+		testcase.log(Status.INFO, "actual title "+title);
+		testcase.log(Status.INFO, "expected title :Google");
+		testcase.log(Status.INFO, "verification of actual and expected title");
+		if (title.equals("Google")) {
+			testcase.log(Status.PASS, "actual title & excepted title are equal");
+			//System.out.println("passed");
+		}else {
+			testcase.log(Status.FAIL, "actual title & excepted title are not equal");
+			TakesScreenshot screenshots=(TakesScreenshot) driver; 
+			File sourcefile=screenshots.getScreenshotAs(OutputType.FILE); 
+			File destinationfile=new File("C:\\Users\\Divakar\\Downloads\\GOOGLE.png");
+			FileHandler.copy(sourcefile, destinationfile);
+			Thread.sleep(4000);
+			testcase.addScreenCaptureFromPath("C:\\Users\\Divakar\\Downloads\\GOOGLE.png");
+
+
+			//System.out.println("failed");
+		}
+	}
+	@Test
+	public void openBing() throws IOException, InterruptedException{
+		testcase=extentreport.createTest("verify Bing Title");
+		testcase.log(Status.INFO, "navigating to bing");
+		driver.get("http://www.Bing.com");
+		String title=driver.getTitle();
+		testcase.log(Status.INFO, "actual title "+title);
+		testcase.log(Status.INFO, "expected title :bing");
+		testcase.log(Status.INFO, "verification of actual and expected title");
+		if (title.equals("bing")) {
+			
+			testcase.log(Status.PASS, "actual title & excepted title are equal");
+			//System.out.println("passed");
+		}else {
+			testcase.log(Status.FAIL, "actual title & excepted title are not equal");
+			TakesScreenshot screenshots=(TakesScreenshot) driver; 
+			File sourcefile=screenshots.getScreenshotAs(OutputType.FILE); 
+			File destinationfile=new File("C:\\Users\\Divakar\\Downloads\\BING.png");
+			FileHandler.copy(sourcefile, destinationfile);
+			Thread.sleep(4000);
+			testcase.addScreenCaptureFromPath("C:\\Users\\Divakar\\Downloads\\BING.png", "okay fine");
+
+
+			//System.out.println("failed");
+		}
+	}
+	
+	
+	@BeforeSuite
+	public void lauchBrowser() {
+		extentreport=new ExtentReports();
+		driver=new ChromeDriver();
+		htmlreporter= new ExtentHtmlReporter("Extentreport.html");
+		extentreport.attachReporter(htmlreporter);
+		
+	}
+	@AfterSuite
+	public void closebrowser() {
+		driver.close();
+		extentreport.flush();
+	}
+	
+	
+	
+}
+
+
+
